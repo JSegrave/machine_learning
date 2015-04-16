@@ -40,7 +40,7 @@ def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
         Number of jobs to run in parallel (default 1).
     """
     plt.figure()
-    plt.title(title)
+    plt.title('Learning Curve\n(%s)'%(title))
     if ylim is not None:
         plt.ylim(*ylim)
     plt.xlabel("Training examples")
@@ -64,4 +64,4 @@ def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
              label="Cross-validation score")
 
     plt.legend(loc="best")
-    return plt
+    plt.show()
