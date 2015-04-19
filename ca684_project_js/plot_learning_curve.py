@@ -5,10 +5,11 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.datasets import load_digits
 from sklearn.learning_curve import learning_curve
+from sklearn.cross_validation import StratifiedKFold
 
 
-def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
-                        n_jobs=1, scoring='accuracy', train_sizes=np.linspace(.1, 1.0, 5)):
+def plot_learning_curve(estimator, title, X, y, ylim=None, n_folds=5,
+                        n_jobs=-1, scoring='accuracy', train_sizes=np.linspace(.1, 1.0, 5)):
     """
     Generate a simple plot of the test and traning learning curve.
 
@@ -28,13 +29,11 @@ def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
         Target relative to X for classification or regression;
         None for unsupervised learning.
 
+    n_folds : integer, 
+        Number of folds for stratified k-fold cross validation.
+
     ylim : tuple, shape (ymin, ymax), optional
         Defines minimum and maximum yvalues plotted.
-
-    cv : integer, cross-validation generator, optional
-        If an integer is passed, it is the number of folds (defaults to 3).
-        Specific cross-validation objects can be passed, see
-        sklearn.cross_validation module for the list of possible objects
 
     n_jobs : integer, optional
         Number of jobs to run in parallel (default 1).
@@ -44,7 +43,8 @@ def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
     if ylim is not None:
         plt.ylim(*ylim)
     plt.xlabel("Training examples")
-    plt.ylabel("Score (" + scoring + ")")
+    plt.ylabel("Score (" + str(scoring) + ")")
+    cv = StratifiedKFold(y, n_folds) # JS addition: Use Stratified types here due to the imbalance in the labels
     train_sizes, train_scores, test_scores = learning_curve(
         estimator, X, y, cv=cv, scoring=scoring, n_jobs=n_jobs, train_sizes=train_sizes)
     train_scores_mean = np.mean(train_scores, axis=1)
