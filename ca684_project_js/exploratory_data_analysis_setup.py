@@ -2,7 +2,7 @@ import pandas
 dataset = pandas.read_csv("./dataset_v5.csv")
 
 # Select the target lable and strip out any rows where there is no label to train or test with
-target_label = 'Lbl: Poor Hosp Rating 2SD'
+target_label = 'Lbl: Poor Hosp Rating 1SD'
 dataset = dataset[dataset[target_label].notnull()]
 
 samples = dataset[[ # keep the agency behavior fields we're interested in
